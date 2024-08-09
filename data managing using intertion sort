@@ -1,0 +1,88 @@
+#include <iostream>
+using namespace std;
+class student
+{
+    int rollno ;
+    float SGPA;
+    string name;
+    public:
+    void getdata();
+    void putdata();
+    void insertion_sort(student s[], int n);
+};
+
+void student :: insertion_sort(student s[], int n ){
+    for(int i = 1; i < n; i++){
+        int j = i - 1;
+        student key = s[i];
+        while(j >=0 && s[j].rollno > key.rollno){
+                s[j+1] = s[j];
+                j--;
+        }
+    s[j+1] = key;
+
+}
+}
+
+void student :: getdata(){
+        cout << "Enter the name of student: ";
+        cin >> name;
+        cout << "enter roll number: ";
+        cin >> rollno;
+        cout << "Enter SGPA: ";
+        cin >> SGPA;
+}
+
+void student :: putdata(){
+        cout << "name: " << name <<endl;
+        cout << "roll number: "<< rollno << endl;
+        cout << "SGPA: " << SGPA <<endl;
+
+
+}
+
+int main()
+{   student s[100], x;
+    int n, choice;
+    char ch;
+    cout << "1. input data of students" << endl;
+    cout << "2. sort data using insertion sort according to roll no." << endl;
+    cout << "3. display sorted data" << endl;
+    cout << "4. exit" << endl;
+    do{
+        cout << "enter the choice"<< endl;
+        cin >> choice;
+        switch(choice)
+        {
+            case 1:
+            cout << "number of students: ";
+            cin >> n;
+            for (int i = 0; i < n;i++){
+                s[i].getdata();
+                }
+            break;
+
+            case 2:
+            x.insertion_sort(s, n);
+            break;
+
+            case 3:
+            for (int i = 0; i < n;i++){
+            s[i].putdata();
+            }
+            break;
+
+            case 4:
+            cout << "exit";
+            break;
+
+        }
+        cout << "do you want to continue? (y/n)";
+        cin >> ch;
+        }
+        while(ch == 'y' || ch == 'Y');
+            return 0;
+
+
+return 0;
+}
