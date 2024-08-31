@@ -1,0 +1,59 @@
+#include <iostream>
+using namespace std;
+
+struct node {
+    int data;
+    node* next;
+    node* prev;
+    node(int x) : data(x), next(NULL), prev(NULL) {}
+};
+
+node* insert_begin(node* head, int data) {
+    node* temp = new node(data);
+    temp->next = head;
+    if (head != NULL) {
+        head->prev = temp;
+    }
+    return temp;  // Return the new head of the list
+}
+
+void print(node* head) {
+    node* curr = head;
+    while (curr != NULL) {
+        cout << curr->data << " ";  // Print data with space for readability
+        curr = curr->next;
+    }
+    cout << endl;  // New line at the end of print
+}
+
+void delete_list(node* head) {
+    node* curr = head;
+    while (curr != NULL) {
+        node* next = curr->next;
+        delete curr;  // Free memory
+        curr = next;
+    }
+}
+
+int main() {
+    int x;
+    node* head = new node(10);
+    node* temp1 = new node(20);
+    node* temp2 = new node(30);
+
+    head->next = temp1; 
+    temp1->prev = head;
+    temp1->next = temp2;
+    temp2->prev = temp1;
+
+    cout << "Enter new node data to insert at the beginning: ";
+    cin >> x;
+
+    head = insert_begin(head, x);  // Update head to the new node
+
+    cout << "Linked list: ";
+    print(head);
+
+    delete_list(head);  // Free memory
+    return 0;
+}
