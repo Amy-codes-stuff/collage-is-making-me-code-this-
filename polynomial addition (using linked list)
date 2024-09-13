@@ -1,0 +1,135 @@
+#include <iostream>
+using namespace std;
+
+class node {
+public:
+    int coeff, pow;
+    node* next;
+    node() : coeff(0), pow(0), next(nullptr) {}
+    node(int c, int p) : coeff(c), pow(p), next(nullptr) {}
+};
+
+class polynomial {
+public:
+    node* head;
+    polynomial() : head(nullptr) {}
+    
+    void InsertAtEnd(int x, int y) {
+        node* nn = new node(x, y);
+        if (head == nullptr) {
+            head = nn;
+        } else {
+            node* temp = head;
+            while (temp->next != nullptr) {
+                temp = temp->next;
+            }
+            temp->next = nn;
+        }
+    }
+
+    // Add two polynomials
+    void add(const polynomial& p1, const polynomial& p2) {
+        node* point1 = p1.head;
+        node* point2 = p2.head;
+        node* result = nullptr;
+        node* curr = nullptr;
+
+        while (point1 != nullptr && point2 != nullptr) {
+            node* nn = new node();
+            if (point1->pow > point2->pow) {
+                nn->pow = point1->pow;
+                nn->coeff = point1->coeff;
+                point1 = point1->next;
+            } else if (point1->pow < point2->pow) {
+                nn->pow = point2->pow;
+                nn->coeff = point2->coeff;
+                point2 = point2->next;
+            } else {
+                nn->pow = point1->pow;
+                nn->coeff = point1->coeff + point2->coeff;
+                point1 = point1->next;
+                point2 = point2->next;
+            }
+            if (result == nullptr) {
+                result = nn;
+                curr = result;
+            } else {
+                curr->next = nn;
+                curr = curr->next;
+            }
+        }
+
+        while (point1 != nullptr) {
+            node* nn = new node(point1->coeff, point1->pow);
+            if (result == nullptr) {
+                result = nn;
+                curr = result;
+            } else {
+                curr->next = nn;
+                curr = curr->next;
+            }
+            point1 = point1->next;
+        }
+
+        while (point2 != nullptr) {
+            node* nn = new node(point2->coeff, point2->pow);
+            if (result == nullptr) {
+                result = nn;
+                curr = result;
+            } else {
+                curr->next = nn;
+                curr = curr->next;
+            }
+            point2 = point2->next;
+        }
+
+        head = result;
+    }
+
+    // Display 
+    void displayPoly() const {
+        node* temp = head;
+        while (temp != nullptr) {
+            cout << temp->coeff << "x^" << temp->pow;
+            if (temp->next != nullptr) cout << " + ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+
+};
+
+int main() {
+    polynomial p1, p2, p3;
+    int n1, n2;
+    int c, p;
+
+    cout << "Enter the number of terms in the first polynomial: ";
+    cin >> n1;
+    cout << "Enter the number of terms in the second polynomial: ";
+    cin >> n2;
+
+    for (int i = 0; i < n1; i++) {
+        cout << "Enter the coefficient and power of term " << i + 1 << " of the first polynomial: ";
+        cin >> c >> p;
+        p1.InsertAtEnd(c, p);
+    }
+
+    for (int i = 0; i < n2; i++) {
+        cout << "Enter the coefficient and power of term " << i + 1 << " of the second polynomial: ";
+        cin >> c >> p;
+        p2.InsertAtEnd(c, p);
+    }
+
+    cout << "First polynomial: ";
+    p1.displayPoly();
+
+    cout << "Second polynomial: ";
+    p2.displayPoly();
+
+    p3.add(p1, p2);
+    cout << "Sum of polynomials: ";
+    p3.displayPoly();
+
+    return 0;
+}
