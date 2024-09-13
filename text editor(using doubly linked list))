@@ -1,0 +1,105 @@
+#include <iostream>
+using namespace std;
+
+class text {
+public:
+    string data;
+    text* next;
+    text* prev;
+
+    text(string x) : data(x), next(nullptr), prev(nullptr) {}
+};
+
+class text_editor {
+public:
+    text* head;
+
+    text_editor() : head(nullptr) {}
+
+    void insert(string data) {
+        text* temp = new text(data);
+        if (head == nullptr) {
+            head = temp;
+            return;
+        }
+
+        text* current = head;
+        while (current->next != nullptr) {
+            current = current->next;
+        }
+        current->next = temp;
+        temp->prev = current;
+    }
+
+    void delete_node(string data) {
+        text* temp = head;
+        while (temp != nullptr) {
+            if (temp->data == data) {
+                if (temp->prev != nullptr) {
+                    temp->prev->next = temp->next;
+                } else {
+                    head = temp->next; // Deleting the head
+                }
+                if (temp->next != nullptr) {
+                    temp->next->prev = temp->prev;
+                }
+                delete temp;
+                return;
+            }
+            temp = temp->next;
+        }
+    }
+
+    void print(){
+        text* temp = head;
+        while (temp != nullptr) {
+            cout << temp->data << endl;
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    text_editor t;
+    string x;
+    int n;
+    char ch; 
+    t.insert("Hello");
+    t.insert("World");
+    cout << "Page: ";
+    t.print();
+    do{
+    cout<< "Enter your choice"<< endl;
+    cout<< "1. Insert the text"<< endl;
+    cout<< "2. Delete the text"<< endl;
+    cout<< "3. Print the text"<< endl;
+    cin >> n;
+
+    switch(n){
+    case 1:
+    cout << "Enter the text to insert: ";
+    cin >> x;
+    t.insert(x);
+    break;
+
+    case 2:
+    cout << "Enter the text to delete: ";
+    cin >> x;
+    t.delete_node(x);
+    break;
+
+    case 3:
+    cout  << "Page: ";
+    t.print();
+
+    default:
+    break;
+    }
+    cout << "Do you want to continue? (y/n): ";
+    cin >> ch;
+    }
+    while(ch == 'y' || ch == 'Y');
+    
+    return 0;
+}
