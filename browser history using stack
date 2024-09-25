@@ -1,0 +1,99 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Stack {
+public:
+    int top;
+    string history[100];
+    int size;
+
+    Stack(int num) {
+        size = num;
+        top = -1;
+    }
+
+    void visited(string url) {
+        if (top >= size - 1) {
+            cout << "Stack is full" << endl;
+        } else {
+            top++;
+            history[top] = url;
+            cout << "Visited: " << url << endl;
+        }
+    }
+
+    void navigate_back() {
+        if (top == -1) {
+            cout << "The history is empty" << endl;
+        }
+        while(top != -1){
+            top--;
+            cout << history[top] << endl;
+        }
+    }
+
+    string current_page() {
+        if (top == -1) {
+            return "No pages in history";
+        } else {
+            return history[top];
+        }
+    }
+
+    bool check_history() {
+        return (top == -1);
+    }
+};
+
+int main() {
+    int num;
+    cout << "Enter the size of the stack: ";
+    cin >> num;
+
+    Stack s(num);
+    int ch;
+
+    do {
+        cout << "Enter the operation to be done:" << endl;
+        cout << "1. Add visited page" << endl;
+        cout << "2. Navigate back" << endl;
+        cout << "3. View current page" << endl;
+        cout << "4. Check if history is empty or not" << endl;
+
+        cout << "Enter your choice: ";
+        cin >> ch;
+
+        switch (ch) {
+            case 1: {
+                string url;
+                cout << "Enter the page visited: ";
+                cin >> url;
+                s.visited(url);
+                break;
+            }
+            case 2:
+                s.navigate_back();
+                break;
+            case 3:
+                cout << "Current page: " << s.current_page() << endl;
+                break;
+            case 4:
+                if (s.check_history())
+                    cout << "History is empty" << endl;
+                else
+                    cout << "History is not empty" << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+
+        cout << "Do you want to continue? (y/n): ";
+        char cont;
+        cin >> cont;
+        if (cont != 'y' && cont != 'Y') break;
+
+    } while (true);
+
+    return 0;
+}
